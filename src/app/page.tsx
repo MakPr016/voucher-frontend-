@@ -2,7 +2,7 @@
 import { useUser, UserButton, SignInButton } from "@clerk/nextjs";
 import { usePhantom } from "@/hooks/usePhantom";
 import bs58 from "bs58";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   const { isSignedIn, user } = useUser();
@@ -10,6 +10,23 @@ export default function Home() {
   const [status, setStatus] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [linkedWallet, setLinkedWallet] = useState<string | null>(null);
+  const [extensionToken, setExtensionToken] = useState<string>("");
+
+  useEffect(() => {
+    if (isSignedIn) {
+      // Generate extension token
+      fetch('/api/extension-auth')
+        .then(res => res.json())
+        .then(data => {
+          if (data.token) {
+            setExtensionToken(data.token);
+            // Store in localStorage for extension to access
+            localStorage.setItem('git-voucher-auth-token', data.token);
+          }
+        })
+        .catch(err => console.error('Failed to get extension token:', err));
+    }
+  }, [isSignedIn, user?.publicMetadata]);
 
   const handleLink = async () => {
     if (!walletAddress || !user) return;
@@ -41,6 +58,14 @@ export default function Home() {
         setStatus("Success! Wallet Linked.");
         await user.reload();
         setLinkedWallet(walletAddress);
+        
+        // Regenerate token with updated wallet
+        const tokenRes = await fetch('/api/extension-auth');
+        const tokenData = await tokenRes.json();
+        if (tokenData.token) {
+          setExtensionToken(tokenData.token);
+          localStorage.setItem('git-voucher-auth-token', tokenData.token);
+        }
       } else {
         const txt = await res.text();
         setStatus(`Failed: ${txt}`);
@@ -108,6 +133,13 @@ export default function Home() {
                 {linkedWallet || (user.publicMetadata.wallets as any)?.solana || "None"}
               </code>
             </div>
+
+            {extensionToken && (
+              <div className="mt-4 border-t border-white/10 pt-4">
+                <p className="text-xs text-gray-500 uppercase mb-2">Extension Ready:</p>
+                <p className="text-xs text-green-400">Your extension is now authenticated!</p>
+              </div>
+            )}
           </div>
         )}
       </div>

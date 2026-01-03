@@ -1,9 +1,12 @@
-import { clerkMiddleware, createRouteMatcher  } from '@clerk/nextjs/server'
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 
-const isPublicRoute = createRouteMatcher(['/api/me']);
+const isPublicRoute = createRouteMatcher([
+  '/api/me',
+  '/api/create-voucher'
+]);
 
 export default clerkMiddleware((auth, req) => {
-  if (isPublicRoute(req)) return; 
+  if (isPublicRoute(req)) return;
 });
 
 export const config = {
