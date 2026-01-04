@@ -1,5 +1,11 @@
 # Git Voucher Dashboard (Frontend)
 
+---
+
+![GitPay Badges](https://img.shields.io/badge/GitPay-3%20Contributions-brightgreen?style=flat-square&logo=solana)
+
+---
+
 The **Git Voucher Dashboard** is a Next.js application that serves as the central hub for the Git Voucher ecosystem. It allows users to link their GitHub accounts with Solana wallets, view received vouchers, and claim crypto rewards.
 
 ## 🚀 Features
