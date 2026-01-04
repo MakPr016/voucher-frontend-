@@ -1,5 +1,6 @@
 "use client";
-import { useUser, UserButton, SignInButton } from "@clerk/nextjs";
+import { useUser, UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
+import Link from "next/link";
 import { usePhantom } from "@/hooks/usePhantom";
 import { ArrowRight, Wallet, Github, Shield, Zap, Download } from "lucide-react";
 
@@ -15,36 +16,37 @@ export default function Home() {
                         <div className="w-9 h-9 bg-white rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.1)]">
                             <Wallet className="w-5 h-5 text-black" />
                         </div>
-                        <span className="font-bold text-xl tracking-tight">Git Voucher</span>
+                        <span className="font-bold text-xl tracking-tight">Git Pay</span>
                     </div>
 
                     <div className="flex items-center gap-6">
                         {isSignedIn ? (
-                            <div className="flex items-center gap-4">
-                                <a href="/dashboard" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
+                            <div className="flex items-center gap-6">
+                                <button className="text-sm font-medium text-zinc-400 hover:text-white transition-colors flex items-center gap-2">
+                                    <Download className="w-4 h-4" />
+                                    Install
+                                </button>
+                                <Link href="/dashboard" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
                                     Dashboard
-                                </a>
+                                </Link>
                                 <UserButton afterSignOutUrl="/" />
                             </div>
                         ) : (
                             <div className="flex items-center gap-6">
+                                <button className="text-sm font-medium text-zinc-400 hover:text-white transition-colors flex items-center gap-2">
+                                    <Download className="w-4 h-4" />
+                                    Install
+                                </button>
                                 <SignInButton mode="modal">
                                     <button className="text-sm font-medium text-zinc-400 hover:text-white transition-colors cursor-pointer">
                                         Sign In
                                     </button>
                                 </SignInButton>
-                                <div className="flex items-center gap-3">
-                                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-900/50 border border-zinc-800 text-[13px] text-zinc-400">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-zinc-600" />
-                                        8.8105 SOL
-                                    </div>
-                                    <div className="px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-[13px] text-indigo-400 flex items-center gap-2">
-                                        <div className="w-5 h-5 rounded-full bg-indigo-500/20 flex items-center justify-center">
-                                            <Github className="w-3 h-3 text-indigo-400" />
-                                        </div>
-                                        5hsR..qFYd
-                                    </div>
-                                </div>
+                                <SignUpButton mode="modal">
+                                    <button className="px-5 py-2 bg-white text-black text-sm font-bold rounded-xl hover:bg-zinc-200 transition-all">
+                                        Sign Up
+                                    </button>
+                                </SignUpButton>
                             </div>
                         )}
                     </div>
@@ -74,9 +76,9 @@ export default function Home() {
                         <button className="px-8 py-3.5 bg-white text-black font-semibold rounded-xl hover:bg-zinc-200 transition-all flex items-center gap-2.5 shadow-[0_0_40px_rgba(255,255,255,0.1)]">
                             Install Extension
                         </button>
-                        <a href="/dashboard" className="px-8 py-3.5 bg-zinc-900/50 border border-zinc-800 text-white font-semibold rounded-xl hover:bg-zinc-900 transition-all">
+                        <Link href="/dashboard" className="px-8 py-3.5 bg-zinc-900/50 border border-zinc-800 text-white font-semibold rounded-xl hover:bg-zinc-900 transition-all">
                             Go to Dashboard
-                        </a>
+                        </Link>
                     </div>
 
                     <div className="flex items-center justify-center gap-8 mb-40 text-[13px] text-zinc-600 font-medium tracking-wide">
@@ -126,17 +128,17 @@ export default function Home() {
                                     The standard for <span className="italic font-light opacity-80 underline underline-offset-8 decoration-1">developer rewards.</span>
                                 </h2>
                                 <p className="text-zinc-500 mb-12 max-w-xl leading-relaxed">
-                                    Git Voucher bridges the gap between open-source contributions and financial incentives using the speed and security of Solana.
+                                    Git Pay bridges the gap between open-source contributions and financial incentives using the speed and security of Solana.
                                 </p>
                                 <div className="flex items-center gap-4">
                                     <button className="px-8 py-3.5 bg-white text-black font-semibold rounded-2xl hover:bg-zinc-200 transition-all flex items-center gap-2.5">
                                         <Download className="w-5 h-5" />
                                         Install Extension
                                     </button>
-                                    <a href="/dashboard" className="px-8 py-3.5 bg-zinc-900/50 border border-zinc-800 text-white font-semibold rounded-2xl hover:bg-zinc-900 transition-all flex items-center gap-2">
+                                    <Link href="/dashboard" className="px-8 py-3.5 bg-zinc-900/50 border border-zinc-800 text-white font-semibold rounded-2xl hover:bg-zinc-900 transition-all flex items-center gap-2">
                                         Open Dashboard
                                         <ArrowRight className="w-4 h-4" />
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                             {/* Decorative glow */}
@@ -150,7 +152,7 @@ export default function Home() {
             <footer className="border-t border-zinc-900 py-12 px-6">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
                     <div className="flex items-center gap-4 text-[13px] font-medium text-zinc-400">
-                        <span className="text-white font-bold">Git Voucher</span>
+                        <span className="text-white font-bold">Git Pay</span>
                         <span className="text-zinc-800">|</span>
                         <span>© 2024 Built on Solana</span>
                     </div>
