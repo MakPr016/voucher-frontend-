@@ -1,15 +1,19 @@
-import { currentUser, clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
 
 function getCorsHeaders(req: Request) {
   const origin = req.headers.get("origin") || "";
 
   let isAllowed = false;
 
+  // Allow chrome extensions, GitHub, and frontend URL
   if (
     origin.startsWith("chrome-extension://") ||
-    origin === "http://localhost:5173" ||
-    origin === "https://github.com"
+    origin === "https://github.com" ||
+    origin === FRONTEND_URL ||
+    origin === "http://localhost:3000" ||
+    origin === "http://localhost:5173"
   ) {
     isAllowed = true;
   }
@@ -58,11 +62,12 @@ export async function POST(req: Request) {
       success: true,
       voucherId,
       recipientUsername,
-      recipientGithubId: recipientGithubId, // Real ID
-      orgGithubId: senderGithubId, // Sender's ID as Org ID (assuming individual use)
+      recipientGithubId: recipientGithubId,
+      orgGithubId: senderGithubId,
       amount: parseFloat(amount),
       reason,
       maintainerWallet: decoded.wallet,
+      claimUrl: `${FRONTEND_URL}/claim/${voucherId}`,
     }, { status: 200, headers });
 
   } catch (error) {
