@@ -40,8 +40,17 @@ export async function POST(req: Request) {
 
   try {
     const decoded = JSON.parse(atob(authToken));
+    const senderGithubId = decoded.githubId;
 
     const { recipientUsername, amount, reason } = await req.json();
+
+    // Fetch recipient's GitHub ID
+    const ghRes = await fetch(`https://api.github.com/users/${recipientUsername}`);
+    if (!ghRes.ok) {
+      throw new Error(`GitHub user ${recipientUsername} not found`);
+    }
+    const ghUser = await ghRes.json();
+    const recipientGithubId = ghUser.id;
 
     const voucherId = `voucher-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
@@ -49,8 +58,8 @@ export async function POST(req: Request) {
       success: true,
       voucherId,
       recipientUsername,
-      recipientGithubId: 67890,
-      orgGithubId: 12345,
+      recipientGithubId: recipientGithubId, // Real ID
+      orgGithubId: senderGithubId, // Sender's ID as Org ID (assuming individual use)
       amount: parseFloat(amount),
       reason,
       maintainerWallet: decoded.wallet,
@@ -58,6 +67,6 @@ export async function POST(req: Request) {
 
   } catch (error) {
     console.error("Create voucher error:", error);
-    return new NextResponse("Server Error", { status: 500, headers });
+    return new NextResponse("Server Error: " + (error as Error).message, { status: 500, headers });
   }
 }
