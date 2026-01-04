@@ -10,10 +10,6 @@ The **Git Voucher Dashboard** is a Next.js application that serves as the centra
 
 ## 🚀 Features
 
-Uploading WhatsApp Video 2026-01-04 at 17.31.04.mp4…
-
-
-
 - **User Authentication:** Secure sign-in via [Clerk](https://clerk.com/).
 - **Wallet Integration:** Link Solana wallets (Phantom) to GitHub identities.
 - **Voucher Claiming:** Dedicated claim pages (`/claim/[id]`) for recipients to withdraw funds.
